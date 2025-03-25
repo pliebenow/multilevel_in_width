@@ -1,34 +1,31 @@
 # Multilevel-in-Width Training for Deep Neural Networks
 
-A PyTorch implementation of a Full Approximation Scheme (FAS)-based multilevel training algorithm for deep neural networks, designed to improve generalization performance through hierarchical representations.
+A PyTorch implementation of multilevel training algorithms for deep neural networks, featuring Heavy Edge Matching (HEM) and Dual Heavy Edge Matching (Dual-HEM) operators for network coarsening.
 
-## Overview
+## Features
 
-This project implements a novel approach to training deep neural networks using multilevel techniques adapted from algebraic multigrid methods. The algorithm constructs a hierarchy of neural networks where each level contains a coarsened version of the original network, leading to improved training efficiency and generalization.
-
-### Key Features
-
-- **Hierarchical Training**: Implements a two-level V-cycle approach for neural network training
-- **Heavy Edge Matching (HEM)**: Efficient coarsening strategy for network layers
-- **Momentum Transfer**: Smooth parameter updates between hierarchy levels
+- **Multilevel Training**: Implements hierarchical training strategies for deep neural networks
+- **HEM Coarsening**: Heavy Edge Matching algorithm for network dimensionality reduction
+- **Dual-HEM Prolongation**: Complementary operator for network prolongation
 - **MLflow Integration**: Comprehensive experiment tracking and monitoring
-- **Multiple Architecture Support**: 
-  - Multilayer Perceptrons (MLP)
-  - Convolutional Neural Networks (CNN)
-  - Transformer Models
+- **Comprehensive Testing**: Extensive test suite for operators and network behavior
 
 ## Installation
 
+1. Clone the repository:
 ```bash
-# Clone the repository
 git clone https://github.com/yourusername/multilevel_in_width.git
 cd multilevel_in_width
+```
 
-# Create and activate virtual environment
+2. Create a virtual environment:
+```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-# Install dependencies
+3. Install dependencies:
+```bash
 pip install -r requirements.txt
 ```
 
@@ -37,113 +34,118 @@ pip install -r requirements.txt
 ```
 multilevel_in_width/
 ├── src/
-│   ├── models/
-│   │   ├── mlp.py
-│   │   ├── cnn.py
-│   │   └── transformer.py
-│   ├── training/
-│   │   ├── trainer.py
-│   │   └── optimizer.py
-│   ├── utils/
-│   │   ├── mlflow_utils.py
-│   │   └── visualization.py
-│   └── config/
-│       └── default_config.yaml
+│   ├── __init__.py      # Package initialization
+│   ├── models/          # Network architectures
+│   │   └── mlp.py      # MLP implementation
+│   ├── training/        # Training logic
+│   │   └── trainer.py  # Multilevel trainer
+│   ├── utils/          # Helper functions
+│   │   ├── hem.py     # HEM implementation
+│   │   └── dual_hem.py # Dual-HEM implementation
+│   └── config/         # Configuration files
 ├── tests/
-├── docs/
-│   ├── idea.md
-│   ├── technical.md
-│   ├── tasks.md
-│   └── status.md
-├── examples/
-├── requirements.txt
-└── README.md
+│   ├── __init__.py     # Test package initialization
+│   ├── conftest.py     # Pytest configuration
+│   └── test_operators.py # Operator tests
+├── docs/               # Documentation
+├── examples/           # Usage examples
+└── requirements.txt    # Dependencies
 ```
 
 ## Usage
 
-### Basic Example
+### Basic MLP Training
 
 ```python
 from src.models.mlp import MultilevelMLP
 from src.training.trainer import MultilevelTrainer
 
 # Initialize model
-model = MultilevelMLP(input_size=784, hidden_sizes=[512, 256], output_size=10)
+model = MultilevelMLP(
+    input_size=784,
+    hidden_sizes=[512, 256],
+    output_size=10,
+    coarsening_factor=0.5
+)
 
 # Initialize trainer
-trainer = MultilevelTrainer(model=model)
+trainer = MultilevelTrainer(
+    model=model,
+    optimizer=torch.optim.Adam(model.parameters()),
+    loss_fn=torch.nn.CrossEntropyLoss()
+)
 
-# Train the model
+# Train model
 trainer.train(train_loader, val_loader, num_epochs=10)
 ```
 
-### MLflow Integration
+### Running Tests
 
-```python
-import mlflow
-
-# Start MLflow tracking
-mlflow.set_tracking_uri("sqlite:///mlflow.db")
-mlflow.set_experiment("multilevel_training")
-
-# Your training code here
+1. Make sure you're in the project root directory:
+```bash
+cd multilevel_in_width
 ```
 
-## Datasets
+2. Run tests:
+```bash
+# Run all tests
+pytest
 
-The project supports multiple datasets for different architectures:
+# Run specific test file
+pytest tests/test_operators.py
 
-1. **MNIST** (MLP)
-   - 60,000 training images
-   - 10,000 test images
-   - 28x28 grayscale images
+# Run with coverage report
+pytest --cov=src tests/
 
-2. **CIFAR-10** (CNN)
-   - 50,000 training images
-   - 10,000 test images
-   - 32x32 RGB images
+# Run with verbose output
+pytest -v
 
-3. **IMDB** (Transformer)
-   - 25,000 training reviews
-   - 25,000 test reviews
-   - Text classification task
+# Run with print statements
+pytest -s
+```
 
-## Documentation
+## Implementation Details
 
-- [Project Overview](docs/idea.md)
-- [Technical Details](docs/technical.md)
-- [Implementation Tasks](docs/tasks.md)
-- [Project Status](docs/status.md)
+### Heavy Edge Matching (HEM)
+
+HEM is used for network coarsening, reducing the dimensionality of the network while preserving its structure. The algorithm:
+
+1. Computes similarity matrix between neurons
+2. Finds maximum weight matching
+3. Creates restriction and prolongation operators
+
+### Dual Heavy Edge Matching (Dual-HEM)
+
+Dual-HEM provides a complementary approach to network prolongation, ensuring:
+
+1. Consistent operator relationships
+2. Preserved network properties
+3. Improved multilevel training stability
+
+### Testing
+
+The test suite includes:
+
+- Fixed network tests with predefined weights
+- Mathematical property verification
+- Operator consistency checks
+- Scaling behavior tests
+- Forward pass preservation tests
 
 ## Contributing
 
 1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Citation
-
-If you use this code in your research, please cite:
-
-```bibtex
-@software{multilevel_in_width2024,
-  author = {Your Name},
-  title = {Multilevel-in-Width Training for Deep Neural Networks},
-  year = {2024},
-  publisher = {GitHub},
-  url = {https://github.com/yourusername/multilevel_in_width}
-}
-```
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Acknowledgments
 
-- PyTorch team for the excellent deep learning framework
-- MLflow team for the comprehensive ML lifecycle management
-- Contributors and maintainers of the datasets used in this project 
+- Based on research in multilevel methods for neural networks
+- Inspired by algebraic multigrid techniques
+- Built with PyTorch and MLflow 

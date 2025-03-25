@@ -167,3 +167,5 @@ This preserves spatial structure while reducing channel count, improving computa
 ## Summary
 
 The **DNN FAS algorithm** provides a structured way to train deep neural networks using multilevel techniques adapted from algebraic multigrid methods. By applying coarse-to-fine corrections and utilizing hierarchical updates, the method achieves improved generalization and efficiency compared to standard SGD training.
+
+
