@@ -1,0 +1,144 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Summary
+
+## Core Technical Components
+
+### 1. Multilevel Training Algorithm
+- **FAS-based Approach**: Two-level V-cycle implementation
+- **Key Components**:
+  - Stochastic Gradient Descent (SGD) at each level
+  - Tau correction computation
+  - Restriction and prolongation operations
+  - Momentum transfer between levels
+
+### 2. Network Coarsening
+- **Heavy Edge Matching (HEM)**:
+  - Groups neurons based on similarity
+  - Reduces dimensionality while preserving structure
+  - Adapts to different network architectures
+
+### 3. Monitoring System
+- **MLflow Integration**:
+  - Experiment tracking
+  - Model versioning
+  - Performance metrics logging
+  - Resource utilization monitoring
+
+## Implementation Phases
+
+### Phase 1: MLP Implementation
+- **Dataset**: MNIST
+- **Key Tasks**:
+  - Base MLP architecture
+  - HEM coarsening for MLP layers
+  - FAS-based training loop
+  - Performance benchmarking
+
+### Phase 2: CNN Implementation
+- **Dataset**: CIFAR-10
+- **Key Tasks**:
+  - Base CNN architecture
+  - Channel-wise coarsening
+  - Spatial-aware operators
+  - Feature map visualization
+
+### Phase 3: Transformer Implementation
+- **Dataset**: IMDB
+- **Key Tasks**:
+  - Base transformer architecture
+  - Attention-aware coarsening
+  - Head-wise operators
+  - Attention pattern visualization
+
+## Project Structure
+
+```
+multilevel_in_width/
+├── src/
+│   ├── models/           # Network architectures
+│   ├── training/         # Training logic
+│   ├── utils/           # Helper functions
+│   └── config/          # Configuration files
+├── tests/               # Test suite
+├── docs/               # Documentation
+├── examples/           # Usage examples
+└── requirements.txt    # Dependencies
+```
+
+## Development Guidelines
+
+### 1. Code Standards
+- PEP 8 compliance
+- Type hints required
+- Comprehensive docstrings
+- Test coverage > 80%
+
+### 2. Version Control
+- Feature branch workflow
+- Conventional commit messages
+- Regular commits (every 5 minutes)
+- Auto-push to main branch
+
+### 3. Documentation
+- API documentation
+- Usage examples
+- Best practices guide
+- Technical specifications
+
+### 4. Testing Requirements
+- Unit tests for components
+- Integration tests for pipeline
+- Performance benchmarks
+- Test coverage reporting
+
+## Performance Metrics
+
+### 1. Training Metrics
+- Training time
+- Memory usage
+- Model accuracy
+- Convergence speed
+
+### 2. Resource Metrics
+- GPU utilization
+- Memory consumption
+- Training time per epoch
+- Model size
+
+## Deployment Requirements
+
+### 1. Environment Setup
+- Local development
+- CI/CD pipeline
+- Production environment
+- Monitoring system
+
+### 2. Monitoring
+- Training progress
+- Resource utilization
+- Model performance
+- System health
+
+## Success Criteria
+
+### 1. Performance
+- Reduced training time
+- Optimized memory usage
+- Preserved model accuracy
+- Improved convergence
+
+### 2. Code Quality
+- High test coverage
+- No critical bugs
+- Clean codebase
+- Comprehensive docs
+
+### 3. User Experience
+- Intuitive API
+- Clear documentation
+- Reproducible results
+- Scalable implementation 
